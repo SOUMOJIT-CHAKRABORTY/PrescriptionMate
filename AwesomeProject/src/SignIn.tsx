@@ -10,73 +10,118 @@ import {
   View,
 } from 'react-native';
 type Props = {};
-const SignIn = (props: Props) => {
+const Signup = (props: Props) => {
   const navigation = useNavigation();
   const handlePress = () => {
-    Alert.alert('Button pressed', 'You did it!');
+    navigation.navigate('Dashboard');
   };
   return (
-    <View className="flex-1 items-center justify-center">
-      <Text className="text-2xl text-black font-medium -translate-y-20">
+    <View
+      className="flex-1 items-center"
+      style={{width: '100%', marginTop: 100, backgroundColor: '#F6F6F6'}}>
+      <Image
+        source={require('./assets/shape.png')}
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          transform: [{translateY: -100}],
+        }}
+      />
+      <Text
+        style={{letterSpacing: 2, marginBottom: 20}}
+        className="text-3xl text-black font-medium">
         Welcome Back!
       </Text>
-      <Image
-        source={require('./assets/signinImg.png')}
-        style={styles.image}
-        className="-translate-y-10"
-      />
-      <View className="mt-0 -translate-y-10">
+      <View
+        style={{
+          borderWidth: 1,
+          borderStyle: 'dashed',
+          borderColor: 'black',
+          width: 200,
+          height: 200,
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}>
+        <Image
+          source={require('./assets/signinImg.png')}
+          style={styles.image}
+        />
+      </View>
+
+      <View style={{marginVertical: 30}}>
         <TextInput
+          style={{width: 320, backgroundColor: 'white', letterSpacing: 2}}
           placeholder="Enter your Mobile no"
-          className="w-full border border-black mt-10 rounded-full px-4 py-2"
+          className="w-full mt-8 rounded-full px-4 py-3"
         />
         <TextInput
+          style={{width: 320, backgroundColor: 'white', letterSpacing: 2}}
           placeholder="Enter password"
-          className="w-full border border-black mt-10 rounded-full px-4 py-2"
+          className="w-full mt-8 rounded-full px-4 py-3"
         />
       </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.button} onPress={handlePress}>
           <Text className="py-2" style={styles.buttonText}>
-            Sign in
+            Login
           </Text>
         </TouchableOpacity>
-        <Text className="mt-5 font-medium">
-          Don't have an account?{' '}
-          <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
-            <Text style={styles.link}>Create One</Text>
+        <View
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            width: 320,
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginVertical: 15,
+          }}>
+          <Text
+            style={{letterSpacing: 2}}
+            className="font-medium text-gray-700">
+            Don't have an account?{' '}
+          </Text>
+          <TouchableOpacity onPress={() => console.log('Sign in pressed')}>
+            <Text
+              style={styles.link}
+              onPress={() => navigation.navigate('Signup')}
+              className="font-bold">
+              Register
+            </Text>
           </TouchableOpacity>
-        </Text>
+        </View>
       </View>
     </View>
   );
 };
-export default SignIn;
+export default Signup;
 const styles = StyleSheet.create({
   buttonContainer: {
-    position: 'absolute',
-    bottom: 100, // Adjust bottom spacing as needed
+    marginTop: 50,
   },
   button: {
     backgroundColor: '#50C2C9',
     paddingVertical: 10,
     paddingHorizontal: 20,
-    borderRadius: 5,
+    borderRadius: 15,
+    width: 320,
   },
   buttonText: {
     color: '#fff',
     fontSize: 16,
     textAlign: 'center',
+    letterSpacing: 1,
   },
   link: {
-    color: 'blue',
-    textDecorationLine: 'underline',
+    color: '#50C2C9',
+    fontSize: 16,
+    letterSpacing: 1,
+    // textDecorationLine: 'underline',
   },
   image: {
     width: 140, // Adjust width as needed
     height: 140, // Adjust height as needed
     resizeMode: 'contain', // Adjust resizeMode as needed
     // paddingBottom: 20, // Adjust padding as needed
-    // transform: [{translateY: -60}],
   },
 });

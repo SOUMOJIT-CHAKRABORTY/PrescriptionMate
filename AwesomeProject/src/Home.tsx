@@ -18,9 +18,35 @@ const Home = () => {
     <View style={styles.container}>
       {/* <Text>Home</Text> */}
       <Image
+        source={require('./assets/shape.png')}
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          // transform: [{translateY: -100}],
+        }}
+      />
+      <Image
         source={require('./assets/startScrenImg.png')}
         style={styles.image}
       />
+      <View>
+        <Text
+          style={{letterSpacing: 2}}
+          className="text-2xl font-bold text-black">
+          Make your prescription here
+        </Text>
+        <Text
+          className="font-md text-gray-500"
+          style={{
+            marginTop: 18,
+            textAlign: 'center',
+            fontSize: 17,
+            letterSpacing: 1,
+          }}>
+          Fast and Paperless solution for making Prescriptions
+        </Text>
+      </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.button} onPress={handlePress}>
           <Text style={styles.buttonText}>Get Started</Text>
@@ -35,6 +61,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center', // Center vertically
     alignItems: 'center', // Center horizontally
+    backgroundColor: '#F6F6F6',
+    // width:
   },
   image: {
     width: 200, // Adjust width as needed
@@ -45,13 +73,15 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     position: 'absolute',
-    bottom: 100, // Adjust bottom spacing as needed
+    bottom: 80, // Adjust bottom spacing as needed
   },
   button: {
     backgroundColor: '#50C2C9',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 5,
+    paddingVertical: 20,
+    paddingHorizontal: 30,
+    borderRadius: 15,
+    width: 320,
+    alignItems: 'center',
   },
   buttonText: {
     color: '#fff',
