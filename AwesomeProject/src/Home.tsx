@@ -1,13 +1,6 @@
-import {useNavigation} from '@react-navigation/native';
 import React from 'react';
-import {
-  Alert,
-  Image,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
+import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 // type Props = {};
 const Home = () => {
   const navigation = useNavigation();

@@ -1,5 +1,5 @@
 import {useNavigation} from '@react-navigation/native';
-import React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -8,8 +8,45 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from 'react-native';
-type Props = {};
-const Prescription = (props: Props) => {
+import DocumentPicker from 'react-native-document-picker';
+
+const Prescription = () => {
+  const [patientName, setPatientName] = useState<String>();
+  const [patientAge, setPatientAge] = useState<String>();
+  const [patientGender, setPatientGender] = useState<String>();
+  const [findings, setFindings] = useState<String>();
+  const [miscellaneous, setMiscellaneous] = useState<String>();
+  const [uploadDoc, setUploadDoc] = useState(null);
+
+  const selectDoc = async () => {
+    try {
+      const doc = await DocumentPicker.pick({
+        type: [DocumentPicker.types.pdf, DocumentPicker.types.images],
+        allowMultiSelection: true,
+      });
+      console.log(doc);
+      setUploadDoc(doc);
+    } catch (error) {
+      if (DocumentPicker.isCancel(error)) {
+        console.log('User cancelled', error);
+      } else {
+        console.log(error);
+      }
+    }
+  };
+
+  const handleOnPress = () => {
+    const patientDetils = {
+      patientName,
+      patientAge,
+      patientGender,
+      findings,
+      miscellaneous,
+      uploadDoc,
+    };
+    console.log(patientDetils);
+    navigation.navigate('Diagonosis');
+  };
   const navigation = useNavigation();
   return (
     <View style={{backgroundColor: '#F6F6F6'}}>
@@ -52,6 +89,8 @@ const Prescription = (props: Props) => {
           <TextInput
             style={{width: 320, backgroundColor: 'white', letterSpacing: 2}}
             placeholder="Enter patient name"
+            maxLength={25}
+            onChange={e => setPatientName(e.nativeEvent.text)}
             className="w-full mt-8 rounded-full px-4 py-3"
           />
           <View
@@ -62,33 +101,43 @@ const Prescription = (props: Props) => {
               alignItems: 'center',
             }}>
             <TextInput
+              keyboardType="numeric"
               style={{width: 120, backgroundColor: 'white', letterSpacing: 2}}
               placeholder="age"
+              maxLength={3}
+              onChange={e => setPatientAge(e.nativeEvent.text)}
               className="w-full mt-8 rounded-full px-4 py-3"
             />
             <TextInput
               style={{width: 120, backgroundColor: 'white', letterSpacing: 2}}
               placeholder="sex"
+              maxLength={10}
+              onChange={e => setPatientGender(e.nativeEvent.text)}
               className="w-full mt-8 rounded-full px-4 py-3"
             />
           </View>
           <TextInput
             style={{width: 320, backgroundColor: 'white', letterSpacing: 2}}
             placeholder="Miscellaneous"
+            maxLength={150}
+            onChange={e => setMiscellaneous(e.nativeEvent.text)}
             className="w-full mt-8 rounded-full px-4 py-3"
           />
           <TextInput
+            multiline
+            maxLength={150}
             style={{
               width: 320,
               height: 80,
               backgroundColor: 'white',
               letterSpacing: 2,
             }}
+            onChange={e => setFindings(e.nativeEvent.text)}
             placeholder="Findings"
             className="w-full mt-8 rounded-3xl px-4 py-3"
           />
         </View>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={selectDoc}>
           <Text
             style={{
               color: '#50C2C9',
@@ -100,9 +149,7 @@ const Prescription = (props: Props) => {
           </Text>
         </TouchableOpacity>
         <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => navigation.navigate('Diagonosis')}>
+          <TouchableOpacity style={styles.button} onPress={handleOnPress}>
             <Text className="py-2" style={styles.buttonText}>
               Next
             </Text>

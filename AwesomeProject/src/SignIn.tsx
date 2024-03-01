@@ -1,5 +1,5 @@
 import {useNavigation} from '@react-navigation/native';
-import React from 'react';
+import React, {useState} from 'react';
 import {
   Alert,
   Image,
@@ -11,8 +11,16 @@ import {
 } from 'react-native';
 type Props = {};
 const Signup = (props: Props) => {
+  const [mobile, setMobile] = useState<String>();
+  const [password, setPassword] = useState<String>();
+
   const navigation = useNavigation();
   const handlePress = () => {
+    const userLogin = {
+      mobile: mobile,
+      password: password,
+    };
+    console.log(userLogin);
     navigation.navigate('Dashboard');
   };
   return (
@@ -51,13 +59,18 @@ const Signup = (props: Props) => {
 
       <View style={{marginVertical: 30}}>
         <TextInput
+          keyboardType="numeric"
           style={{width: 320, backgroundColor: 'white', letterSpacing: 2}}
           placeholder="Enter your Mobile no"
+          maxLength={10}
+          onChange={e => setMobile(e.nativeEvent.text)}
           className="w-full mt-8 rounded-full px-4 py-3"
         />
         <TextInput
+          secureTextEntry={true}
           style={{width: 320, backgroundColor: 'white', letterSpacing: 2}}
           placeholder="Enter password"
+          onChange={e => setPassword(e.nativeEvent.text)}
           className="w-full mt-8 rounded-full px-4 py-3"
         />
       </View>

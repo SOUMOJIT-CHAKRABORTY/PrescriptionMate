@@ -1,8 +1,11 @@
 const express = require("express");
 const db = require("../db/connection");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const JWT_SECRET = "jfakhhgahk";
 
 exports.getAllUsers = (req, res) => {
-  const sql = "SELECT * FROM users";
+  const sql = "SELECT * FROM doctor";
   db.query(sql, (err, data) => {
     if (err) {
       // Error occurred, return 500 status code and error message
@@ -14,28 +17,55 @@ exports.getAllUsers = (req, res) => {
 };
 
 exports.createUser = (req, res) => {
-  const { username, email, password } = req.body;
-  if (!username || !email || !password) {
+  const { name, phone, designation, password } = req.body;
+  if (!name || !phone || !designation || !password) {
     return res.status(400).json({ error: "Invalid input" });
   }
-  const sql = "INSERT INTO users (username, email, password) VALUES (?,?,?)";
-  db.query(sql, [username, email, password], (err, data) => {
-    if (err) return res.status(500).json({ error: err.message });
-    return res.status(201).json({ message: "User created" });
+
+  bcrypt.hash(password, 10, (err, hashedPass) => {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+
+    const sql =
+      "INSERT INTO doctor (name, phone_no, designation, password) VALUES (?,?,?,?)";
+    db.query(sql, [name, phone, designation, hashedPass], (err, data) => {
+      if (err) {
+        return res.status(500).json({ error: err.message });
+      }
+      return res.status(201).json({ message: "User created" });
+    });
   });
 };
 
 exports.loginUser = (req, res) => {
-  const { username, password } = req.body;
-  if (!username || !password) {
+  const { phone, password } = req.body;
+  if (!phone || !password) {
     return res.status(400).json({ error: "Invalid input" });
   }
-  const sql = "SELECT * FROM users WHERE username = ? AND password = ?";
-  db.query(sql, [username, password], (err, data) => {
-    if (err) return res.status(500).json({ error: err.message });
+
+  const sql = "SELECT * FROM doctor WHERE phone_no = ?";
+  db.query(sql, [phone], (err, data) => {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+
     if (data.length === 0) {
       return res.status(401).json({ error: "Invalid credentials" });
     }
-    return res.status(200).json(data[0]);
+
+    const user = data[0];
+    bcrypt.compare(password, user.password, (err, result) => {
+      if (err) {
+        return res.status(500).json({ error: err.message });
+      }
+      if (!result) {
+        return res.status(401).json({ error: "Invalid credentials" });
+      }
+      // const trimmedUser = { ...user };
+      // delete trimmedUser.password;
+      const token = jwt.sign({ phone: user.phone_no }, JWT_SECRET);
+      return res.status(200).json({ status: "ok", data: token });
+    });
   });
 };

@@ -1,5 +1,5 @@
 import {useNavigation} from '@react-navigation/native';
-import React from 'react';
+import React, {useState} from 'react';
 import {
   Alert,
   Image,
@@ -9,11 +9,21 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-type Props = {};
-const Signup = (props: Props) => {
+// type Props = {};
+const Signup = () => {
+  const [name, setName] = useState<String>('');
+  const [designation, setDesignation] = useState<String>('');
+  const [mobile, setMobile] = useState<String>();
+  const [password, setPassword] = useState<String>('');
   const navigation = useNavigation();
   const handlePress = () => {
-    Alert.alert('Button pressed', 'You did it!');
+    const userRegister = {
+      name: name,
+      designation: designation,
+      mobile: mobile,
+      password: password,
+    };
+    console.log(userRegister);
   };
   return (
     <View
@@ -42,21 +52,28 @@ const Signup = (props: Props) => {
         <TextInput
           style={{width: 320, backgroundColor: 'white', letterSpacing: 2}}
           placeholder="Enter your full name"
+          onChange={e => setName(e.nativeEvent.text)}
           className="w-full mt-8 rounded-full px-4 py-3"
         />
         <TextInput
+          keyboardType="numeric"
           style={{width: 320, backgroundColor: 'white', letterSpacing: 2}}
           placeholder="Enter your Mobile no"
+          maxLength={10}
+          onChange={e => setMobile(e.nativeEvent.text)}
           className="w-full mt-8 rounded-full px-4 py-3"
         />
         <TextInput
           style={{width: 320, backgroundColor: 'white', letterSpacing: 2}}
           placeholder="Enter designation"
+          onChange={e => setDesignation(e.nativeEvent.text)}
           className="w-full mt-8 rounded-full px-4 py-3"
         />
         <TextInput
+          secureTextEntry={true}
           style={{width: 320, backgroundColor: 'white', letterSpacing: 2}}
           placeholder="Enter password"
+          onChange={e => setPassword(e.nativeEvent.text)}
           className="w-full mt-8 rounded-full px-4 py-3"
         />
       </View>

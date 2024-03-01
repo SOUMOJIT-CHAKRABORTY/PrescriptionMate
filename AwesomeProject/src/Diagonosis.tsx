@@ -1,5 +1,5 @@
 import {useNavigation} from '@react-navigation/native';
-import React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -8,9 +8,27 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from 'react-native';
-type Props = {};
-const Diagonosis = (props: Props) => {
+
+const Diagonosis = () => {
+  const [generalInstruction, setGeneralInstruction] = useState<String>();
+  const [foodHabits, setFoodHabits] = useState<String>();
+  const [advInstructions, setAdvInstructions] = useState<String>();
+  const [tablets, setTablets] = useState<Number>();
+  const [times, setTimes] = useState<Number>();
+  const [days, setDays] = useState<Number>();
   const navigation = useNavigation();
+
+  const handleOnPress = () => {
+    const diagnosisData = {
+      generalInstruction,
+      foodHabits,
+      advInstructions,
+      tablets,
+      times,
+      days,
+    };
+    console.log(diagnosisData);
+  };
   return (
     <View style={{backgroundColor: '#F6F6F6'}}>
       <Image
@@ -62,12 +80,15 @@ const Diagonosis = (props: Props) => {
             General Instructions
           </Text>
           <TextInput
+            multiline
+            maxLength={150}
             style={{
               width: 320,
               height: 70,
               backgroundColor: 'white',
               letterSpacing: 2,
             }}
+            onChange={e => setGeneralInstruction(e.nativeEvent.text)}
             placeholder="Max 150 chars"
             className="w-full mt-4 rounded-full px-4 py-3"
           />
@@ -91,27 +112,36 @@ const Diagonosis = (props: Props) => {
               alignItems: 'center',
             }}>
             <TextInput
+              keyboardType="numeric"
               style={{width: 100, backgroundColor: 'white', letterSpacing: 2}}
               placeholder="tabs"
+              onChange={e => setTablets(+e.nativeEvent.text)}
               className="w-full mt-2 rounded-full px-4 py-3"
             />
             <TextInput
+              keyboardType="numeric"
               style={{width: 100, backgroundColor: 'white', letterSpacing: 2}}
               placeholder="times"
+              onChange={e => setTimes(+e.nativeEvent.text)}
               className="w-full mt-2 rounded-full px-4 py-3"
             />
             <TextInput
+              keyboardType="numeric"
               style={{width: 100, backgroundColor: 'white', letterSpacing: 2}}
               placeholder="days"
+              onChange={e => setDays(+e.nativeEvent.text)}
               className="w-full mt-2 rounded-full px-4 py-3"
             />
           </View>
           <TextInput
             style={{width: 320, backgroundColor: 'white', letterSpacing: 2}}
             placeholder="Food Habits"
+            onChange={e => setFoodHabits(e.nativeEvent.text)}
             className="w-full mt-8 rounded-full px-4 py-3"
           />
           <TextInput
+            multiline
+            maxLength={150}
             style={{
               width: 320,
               height: 80,
@@ -119,13 +149,12 @@ const Diagonosis = (props: Props) => {
               letterSpacing: 2,
             }}
             placeholder="Advance Instructions"
+            onChange={e => setAdvInstructions(e.nativeEvent.text)}
             className="w-full mt-8 rounded-3xl px-4 py-3"
           />
         </View>
         <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => navigation.navigate('Diagonosis')}>
+          <TouchableOpacity style={styles.button} onPress={handleOnPress}>
             <Text className="py-2" style={styles.buttonText}>
               Export
             </Text>
