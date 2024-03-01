@@ -1,4 +1,6 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/native';
+import axios from 'axios';
 import React, {useState} from 'react';
 import {
   Alert,
@@ -17,11 +19,25 @@ const Signup = (props: Props) => {
   const navigation = useNavigation();
   const handlePress = () => {
     const userLogin = {
-      mobile: mobile,
+      phone: mobile,
       password: password,
     };
     console.log(userLogin);
-    navigation.navigate('Dashboard');
+    axios
+      .post('http://192.168.129.117:3000/users/login', userLogin)
+      .then(res => {
+        console.log(res.data);
+        if (res.data.status === 'ok') {
+          Alert.alert('User Logged In successfully');
+          AsyncStorage.setItem('token', res.data.data);
+          AsyncStorage.setItem('isLoggedin', JSON.stringify(true));
+          navigation.navigate('Dashboard');
+        }
+      })
+      .catch(err => {
+        console.log(err);
+        Alert.alert('Invalid Credentials');
+      });
   };
   return (
     <View

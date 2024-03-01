@@ -1,9 +1,22 @@
 import React from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 // type Props = {};
 const Home = () => {
   const navigation = useNavigation();
+  const [isLoggedin, setIsLoggedin] = React.useState(false);
+  async function getData() {
+    const data = await AsyncStorage.getItem('isLoggedin');
+    setIsLoggedin(Boolean(data));
+  }
+  React.useEffect(() => {
+    getData();
+    if (isLoggedin) {
+      navigation.navigate('Dashboard');
+    }
+  }, []);
+
   const handlePress = () => {
     navigation.navigate('Signup');
   };

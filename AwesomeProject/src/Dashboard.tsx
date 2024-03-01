@@ -1,9 +1,24 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/native';
-import React from 'react';
+import axios from 'axios';
+import React, {useEffect, useState} from 'react';
 import {View, Text, Image, ScrollView, TouchableOpacity} from 'react-native';
 import PlusIcon from 'react-native-vector-icons/Entypo';
 type Props = {};
 const Dashboard = (props: Props) => {
+  const [userData, setUserData] = useState();
+  const getUserData = async () => {
+    const token = await AsyncStorage.getItem('token');
+    axios
+      .post('http://192.168.129.117:3000/users/getuser', {token: token})
+      .then(res => {
+        console.log(res.data);
+        setUserData(res.data.data);
+      });
+  };
+  useEffect(() => {
+    getUserData();
+  }, []);
   const navigation = useNavigation();
   return (
     <View style={{backgroundColor: '#F6F6F6'}}>
@@ -38,7 +53,7 @@ const Dashboard = (props: Props) => {
             letterSpacing: 1,
             color: 'white',
           }}>
-          Welcome, Dr. Oliva Grace
+          Welcome, Dr. {userData?.name.split(' ')[0]}
         </Text>
       </View>
       <View style={{marginTop: 40, marginHorizontal: 20}}>
@@ -85,50 +100,24 @@ const Dashboard = (props: Props) => {
                 <PlusIcon name="circle-with-plus" size={26} color={'#50C2C9'} />
               </TouchableOpacity>
             </View>
-            <ScrollView style={{display: 'flex'}}>
-              <View style={{flexDirection: 'row', marginVertical: 15}}>
-                <Text
-                  style={{fontSize: 16, letterSpacing: 1, color: '#000000'}}>
-                  1. Patient 1
-                </Text>
-              </View>
-              <View style={{flexDirection: 'row', marginVertical: 15}}>
-                <Text
-                  style={{fontSize: 16, letterSpacing: 1, color: '#000000'}}>
-                  2. Patient 2
-                </Text>
-              </View>
-              <View style={{flexDirection: 'row', marginVertical: 15}}>
-                <Text
-                  style={{fontSize: 16, letterSpacing: 1, color: '#000000'}}>
-                  3. Patient 3
-                </Text>
-              </View>
-              <View style={{flexDirection: 'row', marginVertical: 15}}>
-                <Text
-                  style={{fontSize: 16, letterSpacing: 1, color: '#000000'}}>
-                  4. Patient 4
-                </Text>
-              </View>
-              <View style={{flexDirection: 'row', marginVertical: 15}}>
-                <Text
-                  style={{fontSize: 16, letterSpacing: 1, color: '#000000'}}>
-                  5. Patient 5
-                </Text>
-              </View>
-              <View style={{flexDirection: 'row', marginVertical: 15}}>
-                <Text
-                  style={{fontSize: 16, letterSpacing: 1, color: '#000000'}}>
-                  6. Patient 6
-                </Text>
-              </View>
-              <View style={{flexDirection: 'row', marginVertical: 15}}>
-                <Text
-                  style={{fontSize: 16, letterSpacing: 1, color: '#000000'}}>
-                  7. Patient 7
-                </Text>
-              </View>
-            </ScrollView>
+            {userData && userData.patients && userData.patients.length > 0 && (
+              <ScrollView style={{display: 'flex'}}>
+                {userData.patients.map((patient, index) => (
+                  <View
+                    key={index}
+                    style={{flexDirection: 'row', marginVertical: 15}}>
+                    <Text
+                      style={{
+                        fontSize: 16,
+                        letterSpacing: 1,
+                        color: '#000000',
+                      }}>
+                      {index + 1}. {patient.name}
+                    </Text>
+                  </View>
+                ))}
+              </ScrollView>
+            )}
           </View>
         </View>
       </View>

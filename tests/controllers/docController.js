@@ -69,3 +69,25 @@ exports.loginUser = (req, res) => {
     });
   });
 };
+
+exports.getUser = (req, res) => {
+  const { token } = req.body;
+  if (!token) {
+    return res.status(400).json({ error: "Invalid input" });
+  }
+  const user = jwt.verify(token, JWT_SECRET);
+  const phone = user.phone;
+  const sql = "SELECT * FROM doctor WHERE phone_no = ?";
+  db.query(sql, [phone], (err, data) => {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+    if (data.length === 0) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    const trimmedUser = { ...data[0] };
+    delete trimmedUser.password;
+    return res.status(200).json({ status: "ok", data: trimmedUser });
+  });
+  // res.send(user);
+};

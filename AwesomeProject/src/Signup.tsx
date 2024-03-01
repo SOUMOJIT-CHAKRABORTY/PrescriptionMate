@@ -1,4 +1,5 @@
 import {useNavigation} from '@react-navigation/native';
+import axios from 'axios';
 import React, {useState} from 'react';
 import {
   Alert,
@@ -19,11 +20,23 @@ const Signup = () => {
   const handlePress = () => {
     const userRegister = {
       name: name,
+      phone: mobile,
       designation: designation,
-      mobile: mobile,
       password: password,
     };
     console.log(userRegister);
+    axios
+      .post('http://192.168.129.117:3000/users/create-user', userRegister)
+      .then(res => {
+        console.log(res.data);
+        if (res.data.message === 'User created') {
+          Alert.alert('User created successfully');
+          navigation.navigate('SignIn');
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
   };
   return (
     <View
