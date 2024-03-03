@@ -4,15 +4,15 @@ import axios from 'axios';
 import React, {useEffect, useState} from 'react';
 import {View, Text, Image, ScrollView, TouchableOpacity} from 'react-native';
 import PlusIcon from 'react-native-vector-icons/Entypo';
-type Props = {};
-const Dashboard = (props: Props) => {
+
+const Dashboard = () => {
   const [userData, setUserData] = useState();
   const getUserData = async () => {
     const token = await AsyncStorage.getItem('token');
     axios
-      .post('http://192.168.129.117:3000/users/getuser', {token: token})
+      .post('http://192.168.0.106:3000/users/getuser', {token: token})
       .then(res => {
-        console.log(res.data);
+        console.log(res.data.data.patients);
         setUserData(res.data.data);
       });
   };
@@ -23,7 +23,7 @@ const Dashboard = (props: Props) => {
   return (
     <View style={{backgroundColor: '#F6F6F6'}}>
       <Image
-        source={require('./assets/shape.png')}
+        source={require('../assets/shape.png')}
         style={{
           position: 'absolute',
           top: 0,
@@ -42,7 +42,7 @@ const Dashboard = (props: Props) => {
           alignItems: 'center',
         }}>
         <Image
-          source={require('./assets/profilepic.png')}
+          source={require('../assets/profilepic.png')}
           style={{transform: [{translateY: 35}]}}
         />
         <Text
@@ -100,6 +100,24 @@ const Dashboard = (props: Props) => {
                 <PlusIcon name="circle-with-plus" size={26} color={'#50C2C9'} />
               </TouchableOpacity>
             </View>
+            {!userData?.patients && (
+              <View
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginTop: 20,
+                }}>
+                <Text
+                  style={{
+                    fontSize: 16,
+                    letterSpacing: 1,
+                    color: '#000000',
+                  }}>
+                  No Patients Found
+                </Text>
+              </View>
+            )}
             {userData && userData.patients && userData.patients.length > 0 && (
               <ScrollView style={{display: 'flex'}}>
                 {userData.patients.map((patient, index) => (

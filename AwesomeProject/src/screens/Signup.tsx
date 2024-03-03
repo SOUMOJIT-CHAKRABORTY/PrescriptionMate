@@ -43,7 +43,7 @@ const Signup = () => {
       className="flex-1 items-center"
       style={{width: '100%', marginTop: 100, backgroundColor: '#F6F6F6'}}>
       <Image
-        source={require('./assets/shape.png')}
+        source={require('../assets/shape.png')}
         style={{
           position: 'absolute',
           top: 0,

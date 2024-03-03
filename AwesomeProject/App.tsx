@@ -1,13 +1,12 @@
 import * as React from 'react';
-import {NavigationContainer, useNavigation} from '@react-navigation/native';
+import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import Home from './src/Home';
-import Signup from './src/Signup';
-import SignIn from './src/SignIn';
-import Dashboard from './src/Dashboard';
-import Prescription from './src/Prescription';
-import Diagonosis from './src/Diagonosis';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import Home from './src/screens/Home';
+import Signup from './src/screens/Signup';
+import SignIn from './src/screens/SignIn';
+import Dashboard from './src/screens/Dashboard';
+import Prescription from './src/screens/Prescription';
+import Diagonosis from './src/screens/Diagonosis';
 
 const Stack = createNativeStackNavigator();
 

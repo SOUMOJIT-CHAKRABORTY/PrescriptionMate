@@ -8,31 +8,50 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from 'react-native';
+import DocumentPicker from 'react-native-document-picker';
 
-const Diagonosis = () => {
-  const [generalInstruction, setGeneralInstruction] = useState<String>();
-  const [foodHabits, setFoodHabits] = useState<String>();
-  const [advInstructions, setAdvInstructions] = useState<String>();
-  const [tablets, setTablets] = useState<Number>();
-  const [times, setTimes] = useState<Number>();
-  const [days, setDays] = useState<Number>();
-  const navigation = useNavigation();
+const Prescription = () => {
+  const [patientName, setPatientName] = useState<String>();
+  const [patientAge, setPatientAge] = useState<String>();
+  const [patientGender, setPatientGender] = useState<String>();
+  const [findings, setFindings] = useState<String>();
+  const [miscellaneous, setMiscellaneous] = useState<String>();
+  const [uploadDoc, setUploadDoc] = useState(null);
+
+  const selectDoc = async () => {
+    try {
+      const doc = await DocumentPicker.pick({
+        type: [DocumentPicker.types.pdf, DocumentPicker.types.images],
+        allowMultiSelection: true,
+      });
+      console.log(doc);
+      setUploadDoc(doc);
+    } catch (error) {
+      if (DocumentPicker.isCancel(error)) {
+        console.log('User cancelled', error);
+      } else {
+        console.log(error);
+      }
+    }
+  };
 
   const handleOnPress = () => {
-    const diagnosisData = {
-      generalInstruction,
-      foodHabits,
-      advInstructions,
-      tablets,
-      times,
-      days,
+    const patientDetils = {
+      patientName,
+      patientAge,
+      patientGender,
+      findings,
+      miscellaneous,
+      uploadDoc,
     };
-    console.log(diagnosisData);
+    console.log(patientDetils);
+    navigation.navigate('Diagonosis');
   };
+  const navigation = useNavigation();
   return (
     <View style={{backgroundColor: '#F6F6F6'}}>
       <Image
-        source={require('./assets/shape.png')}
+        source={require('../assets/shape.png')}
         style={{position: 'absolute', top: 0, left: 0}}
       />
       <Text
@@ -44,7 +63,7 @@ const Diagonosis = () => {
           letterSpacing: 2,
           color: '#000000',
         }}>
-        ADD DIAGNOSIS
+        CREATE PRESCRIPTION
       </Text>
       <View style={{marginTop: 10, marginHorizontal: 20, alignItems: 'center'}}>
         <View
@@ -58,7 +77,7 @@ const Diagonosis = () => {
             alignItems: 'center',
           }}>
           <Image
-            source={require('./assets/prescImg.png')}
+            source={require('../assets/prescImg.png')}
             style={{
               width: 180,
               height: 140,
@@ -66,44 +85,14 @@ const Diagonosis = () => {
             }}
           />
         </View>
-        <View style={{marginVertical: 10}}>
-          <Text
-            style={{
-              // marginTop: 40,
-              // marginHorizontal: 20,
-              marginBottom: 0,
-              fontSize: 22,
-              fontWeight: 'bold',
-              letterSpacing: 2,
-              color: '#000000',
-            }}>
-            General Instructions
-          </Text>
+        <View style={{marginVertical: 15}}>
           <TextInput
-            multiline
-            maxLength={150}
-            style={{
-              width: 320,
-              height: 70,
-              backgroundColor: 'white',
-              letterSpacing: 2,
-            }}
-            onChange={e => setGeneralInstruction(e.nativeEvent.text)}
-            placeholder="Max 150 chars"
-            className="w-full mt-4 rounded-full px-4 py-3"
+            style={{width: 320, backgroundColor: 'white', letterSpacing: 2}}
+            placeholder="Enter patient name"
+            maxLength={25}
+            onChange={e => setPatientName(e.nativeEvent.text)}
+            className="w-full mt-8 rounded-full px-4 py-3"
           />
-          <Text
-            style={{
-              marginTop: 8,
-              // marginHorizontal: 20,
-              marginBottom: 0,
-              fontSize: 22,
-              fontWeight: 'bold',
-              letterSpacing: 2,
-              color: '#000000',
-            }}>
-            Drug Instructions
-          </Text>
           <View
             style={{
               display: 'flex',
@@ -113,30 +102,25 @@ const Diagonosis = () => {
             }}>
             <TextInput
               keyboardType="numeric"
-              style={{width: 100, backgroundColor: 'white', letterSpacing: 2}}
-              placeholder="tabs"
-              onChange={e => setTablets(+e.nativeEvent.text)}
-              className="w-full mt-2 rounded-full px-4 py-3"
+              style={{width: 120, backgroundColor: 'white', letterSpacing: 2}}
+              placeholder="age"
+              maxLength={3}
+              onChange={e => setPatientAge(e.nativeEvent.text)}
+              className="w-full mt-8 rounded-full px-4 py-3"
             />
             <TextInput
-              keyboardType="numeric"
-              style={{width: 100, backgroundColor: 'white', letterSpacing: 2}}
-              placeholder="times"
-              onChange={e => setTimes(+e.nativeEvent.text)}
-              className="w-full mt-2 rounded-full px-4 py-3"
-            />
-            <TextInput
-              keyboardType="numeric"
-              style={{width: 100, backgroundColor: 'white', letterSpacing: 2}}
-              placeholder="days"
-              onChange={e => setDays(+e.nativeEvent.text)}
-              className="w-full mt-2 rounded-full px-4 py-3"
+              style={{width: 120, backgroundColor: 'white', letterSpacing: 2}}
+              placeholder="sex"
+              maxLength={10}
+              onChange={e => setPatientGender(e.nativeEvent.text)}
+              className="w-full mt-8 rounded-full px-4 py-3"
             />
           </View>
           <TextInput
             style={{width: 320, backgroundColor: 'white', letterSpacing: 2}}
-            placeholder="Food Habits"
-            onChange={e => setFoodHabits(e.nativeEvent.text)}
+            placeholder="Miscellaneous"
+            maxLength={150}
+            onChange={e => setMiscellaneous(e.nativeEvent.text)}
             className="w-full mt-8 rounded-full px-4 py-3"
           />
           <TextInput
@@ -148,15 +132,26 @@ const Diagonosis = () => {
               backgroundColor: 'white',
               letterSpacing: 2,
             }}
-            placeholder="Advance Instructions"
-            onChange={e => setAdvInstructions(e.nativeEvent.text)}
+            onChange={e => setFindings(e.nativeEvent.text)}
+            placeholder="Findings"
             className="w-full mt-8 rounded-3xl px-4 py-3"
           />
         </View>
+        <TouchableOpacity onPress={selectDoc}>
+          <Text
+            style={{
+              color: '#50C2C9',
+              fontWeight: 'bold',
+              letterSpacing: 1,
+              marginTop: 5,
+            }}>
+            Upload Files
+          </Text>
+        </TouchableOpacity>
         <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.button} onPress={handleOnPress}>
             <Text className="py-2" style={styles.buttonText}>
-              Export
+              Next
             </Text>
           </TouchableOpacity>
         </View>
@@ -164,7 +159,7 @@ const Diagonosis = () => {
     </View>
   );
 };
-export default Diagonosis;
+export default Prescription;
 
 const styles = StyleSheet.create({
   buttonContainer: {

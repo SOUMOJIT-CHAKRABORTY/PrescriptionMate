@@ -24,7 +24,7 @@ const Home = () => {
     <View style={styles.container}>
       {/* <Text>Home</Text> */}
       <Image
-        source={require('./assets/shape.png')}
+        source={require('../assets/shape.png')}
         style={{
           position: 'absolute',
           top: 0,
@@ -33,7 +33,7 @@ const Home = () => {
         }}
       />
       <Image
-        source={require('./assets/startScrenImg.png')}
+        source={require('../assets/startScrenImg.png')}
         style={styles.image}
       />
       <View>

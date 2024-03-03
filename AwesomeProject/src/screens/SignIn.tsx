@@ -11,8 +11,8 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-type Props = {};
-const Signup = (props: Props) => {
+
+const Signup = () => {
   const [mobile, setMobile] = useState<String>();
   const [password, setPassword] = useState<String>();
 
@@ -24,7 +24,7 @@ const Signup = (props: Props) => {
     };
     console.log(userLogin);
     axios
-      .post('http://192.168.129.117:3000/users/login', userLogin)
+      .post('http://192.168.0.106:3000/users/login', userLogin)
       .then(res => {
         console.log(res.data);
         if (res.data.status === 'ok') {
@@ -32,19 +32,36 @@ const Signup = (props: Props) => {
           AsyncStorage.setItem('token', res.data.data);
           AsyncStorage.setItem('isLoggedin', JSON.stringify(true));
           navigation.navigate('Dashboard');
+        } else {
+          Alert.alert('Invalid Credentials');
         }
       })
       .catch(err => {
-        console.log(err);
-        Alert.alert('Invalid Credentials');
+        if (err.response) {
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          if (err.response.status === 401) {
+            Alert.alert('Unauthorized: Invalid Credentials');
+          } else {
+            Alert.alert('Server Error: Please try again later');
+          }
+        } else if (err.request) {
+          // The request was made but no response was received
+          Alert.alert('Network Error: Please check your internet connection');
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.log('Error', err.message);
+          Alert.alert('Error: Please try again later');
+        }
       });
   };
+
   return (
     <View
       className="flex-1 items-center"
       style={{width: '100%', marginTop: 100, backgroundColor: '#F6F6F6'}}>
       <Image
-        source={require('./assets/shape.png')}
+        source={require('../assets/shape.png')}
         style={{
           position: 'absolute',
           top: 0,
@@ -68,7 +85,7 @@ const Signup = (props: Props) => {
           justifyContent: 'center',
         }}>
         <Image
-          source={require('./assets/signinImg.png')}
+          source={require('../assets/signinImg.png')}
           style={styles.image}
         />
       </View>
