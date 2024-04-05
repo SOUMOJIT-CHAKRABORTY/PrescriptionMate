@@ -7,15 +7,25 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
+  // Modal,
+  // Button,
 } from 'react-native';
+import PlusIcon from 'react-native-vector-icons/Entypo';
+import EyeIcon from 'react-native-vector-icons/AntDesign';
+import ModalView from '../components/ModalView';
+// import PDFDocument from 'react-native-pdf';
+// import RNFS from 'react-native-fs';
+// import Linking from 'react-native-linking';
 
 const Diagonosis = () => {
   const [generalInstruction, setGeneralInstruction] = useState<String>();
   const [foodHabits, setFoodHabits] = useState<String>();
   const [advInstructions, setAdvInstructions] = useState<String>();
-  const [tablets, setTablets] = useState<Number>();
-  const [times, setTimes] = useState<Number>();
-  const [days, setDays] = useState<Number>();
+  // const [tablets, setTablets] = useState<Number>();
+  // const [times, setTimes] = useState<Number>();
+  // const [days, setDays] = useState<Number>();
+  const [modalVisible, setModalVisible] = useState(false);
+  const [viewable, setViewable] = useState(false);
   // const navigation = useNavigation();
 
   const handleOnPress = () => {
@@ -23,9 +33,9 @@ const Diagonosis = () => {
       generalInstruction,
       foodHabits,
       advInstructions,
-      tablets,
-      times,
-      days,
+      // tablets,
+      // times,
+      // days,
     };
     console.log(diagnosisData);
   };
@@ -94,7 +104,7 @@ const Diagonosis = () => {
           />
           <Text
             style={{
-              marginTop: 8,
+              marginTop: 15,
               // marginHorizontal: 20,
               marginBottom: 0,
               fontSize: 22,
@@ -104,14 +114,31 @@ const Diagonosis = () => {
             }}>
             Drug Instructions
           </Text>
-          <View
+          {/* <View
             style={{
               display: 'flex',
               flexDirection: 'row',
-              justifyContent: 'space-between',
+              justifyContent: 'center',
               alignItems: 'center',
-            }}>
-            <TextInput
+            }}> */}
+          <EyeIcon
+            name="eye"
+            size={36}
+            color={'#50C2C9'}
+            onPress={() => setViewable(true)}
+            style={{position: 'absolute', right: 55, top: 130}}
+          />
+
+          <PlusIcon
+            name="circle-with-plus"
+            size={32}
+            color={'#50C2C9'}
+            onPress={() => setModalVisible(true)}
+            style={{position: 'absolute', right: 15, top: 132}}
+          />
+
+          <ModalView visible={modalVisible} setVisible={setModalVisible} />
+          {/* <TextInput
               keyboardType="numeric"
               style={{width: 100, backgroundColor: 'white', letterSpacing: 2}}
               placeholder="tabs"
@@ -131,8 +158,8 @@ const Diagonosis = () => {
               placeholder="days"
               onChange={e => setDays(+e.nativeEvent.text)}
               className="w-full mt-2 rounded-full px-4 py-3"
-            />
-          </View>
+            /> */}
+          {/* </View> */}
           <TextInput
             style={{width: 320, backgroundColor: 'white', letterSpacing: 2}}
             placeholder="Food Habits"
@@ -194,5 +221,30 @@ const styles = StyleSheet.create({
     height: 140, // Adjust height as needed
     resizeMode: 'contain', // Adjust resizeMode as needed
     // paddingBottom: 20, // Adjust padding as needed
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 20,
+  },
+  input: {
+    width: '100%',
+    height: 40,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    marginBottom: 20,
+    paddingHorizontal: 10,
+  },
+  closeButton: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
+    zIndex: 999, // Ensure it's above other elements
   },
 });
