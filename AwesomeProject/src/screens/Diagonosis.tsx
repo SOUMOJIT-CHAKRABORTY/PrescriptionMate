@@ -13,6 +13,7 @@ import {
 import PlusIcon from 'react-native-vector-icons/Entypo';
 import EyeIcon from 'react-native-vector-icons/AntDesign';
 import ModalView from '../components/ModalView';
+import ModalList from '../components/ModalList';
 // import PDFDocument from 'react-native-pdf';
 // import RNFS from 'react-native-fs';
 // import Linking from 'react-native-linking';
@@ -138,6 +139,7 @@ const Diagonosis = () => {
           />
 
           <ModalView visible={modalVisible} setVisible={setModalVisible} />
+          <ModalList visible={viewable} setVisible={setViewable} />
           {/* <TextInput
               keyboardType="numeric"
               style={{width: 100, backgroundColor: 'white', letterSpacing: 2}}
@@ -195,7 +197,7 @@ export default Diagonosis;
 
 const styles = StyleSheet.create({
   buttonContainer: {
-    marginTop: 25,
+    marginTop: 35,
   },
   button: {
     backgroundColor: '#50C2C9',

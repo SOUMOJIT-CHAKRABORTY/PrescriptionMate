@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  Button,
   Modal,
   StyleSheet,
   Text,
@@ -20,6 +19,7 @@ const ModalView = ({visible, setVisible}: Props) => {
     <Modal
       visible={visible}
       onRequestClose={() => setVisible(false)}
+      //   style={{backgroundColor: '#F6F6F6'}}
       animationType="slide"
       presentationStyle="pageSheet">
       <View style={styles.modalContainer}>
@@ -34,28 +34,50 @@ const ModalView = ({visible, setVisible}: Props) => {
 
         {/* Drug Name input (single line) */}
         <TextInput
-          style={[styles.input, styles.singleLineInput]}
+          style={{
+            width: 320,
+            backgroundColor: 'white',
+            letterSpacing: 2,
+            marginBottom: 20,
+          }}
           placeholder="Add Drug Name"
+          className="w-full mt-8 rounded-full px-4 py-3"
         />
 
         {/* Container for other inputs (in one line) */}
         <View style={styles.inputContainer}>
           <TextInput
+            keyboardType="numeric"
             style={[styles.input, styles.inlineInput]}
-            placeholder="No. of Tablets"
+            placeholder="Tablets"
+            className="w-full mt-8 rounded-full px-2 py-3"
           />
           <TextInput
+            keyboardType="numeric"
             style={[styles.input, styles.inlineInput]}
-            placeholder="No. of Times"
+            placeholder="Times"
+            className="w-full mt-8 rounded-full px-2 py-3"
           />
           <TextInput
+            keyboardType="numeric"
             style={[styles.input, styles.inlineInput]}
-            placeholder="No. of Days"
+            placeholder="Days"
+            className="w-full mt-8 rounded-full px-2 py-3"
           />
         </View>
 
         {/* Save button */}
-        <Button title="Add" onPress={() => {}} />
+        <TouchableOpacity style={styles.button} onPress={() => {}}>
+          <Text
+            style={{
+              color: 'white',
+              textAlign: 'center',
+              letterSpacing: 1,
+              fontSize: 16,
+            }}>
+            Add
+          </Text>
+        </TouchableOpacity>
       </View>
     </Modal>
   );
@@ -69,6 +91,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 20,
+    backgroundColor: '#F6F6F6',
   },
   modalTitle: {
     marginTop: 15,
@@ -78,8 +101,18 @@ const styles = StyleSheet.create({
     letterSpacing: 2,
     color: '#000000',
   },
+  button: {
+    backgroundColor: '#50C2C9',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 15,
+    width: 320,
+  },
+
   input: {
     width: '100%',
+    backgroundColor: 'white',
+    letterSpacing: 2,
     height: 40,
     borderWidth: 1,
     borderColor: '#ccc',
