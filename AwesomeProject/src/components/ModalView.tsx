@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   Modal,
   StyleSheet,
@@ -9,12 +9,37 @@ import {
 } from 'react-native';
 import CloseIcon from 'react-native-vector-icons/AntDesign';
 
+type Medicine = {
+  name: string;
+  tablets: string;
+  times: string;
+  days: string;
+};
+
 type Props = {
   visible: boolean;
   setVisible: (visible: boolean) => void;
+  medicines: Medicine[];
+  setMedicines: (medicines: Medicine[]) => void;
 };
 
-const ModalView = ({visible, setVisible}: Props) => {
+const ModalView = ({visible, setVisible, medicines, setMedicines}: Props) => {
+  const [drugName, setDrugName] = useState<string>('');
+  const [tablets, setTablets] = useState<string>('');
+  const [times, setTimes] = useState<string>('');
+  const [days, setDays] = useState<string>('');
+
+  const meddetails = {
+    name: drugName,
+    tablets: tablets,
+    times: times,
+    days: days,
+  };
+  const handleOnPress = () => {
+    console.log(drugName);
+    setMedicines([...medicines, meddetails]);
+  };
+
   return (
     <Modal
       visible={visible}
@@ -41,6 +66,7 @@ const ModalView = ({visible, setVisible}: Props) => {
             marginBottom: 20,
           }}
           placeholder="Add Drug Name"
+          onChange={e => setDrugName(e.nativeEvent.text)}
           className="w-full mt-8 rounded-full px-4 py-3"
         />
 
@@ -50,24 +76,27 @@ const ModalView = ({visible, setVisible}: Props) => {
             keyboardType="numeric"
             style={[styles.input, styles.inlineInput]}
             placeholder="Tablets"
+            onChange={e => setTablets(e.nativeEvent.text)}
             className="w-full mt-8 rounded-full px-2 py-3"
           />
           <TextInput
             keyboardType="numeric"
             style={[styles.input, styles.inlineInput]}
             placeholder="Times"
+            onChange={e => setTimes(e.nativeEvent.text)}
             className="w-full mt-8 rounded-full px-2 py-3"
           />
           <TextInput
             keyboardType="numeric"
             style={[styles.input, styles.inlineInput]}
             placeholder="Days"
+            onChange={e => setDays(e.nativeEvent.text)}
             className="w-full mt-8 rounded-full px-2 py-3"
           />
         </View>
 
         {/* Save button */}
-        <TouchableOpacity style={styles.button} onPress={() => {}}>
+        <TouchableOpacity style={styles.button} onPress={handleOnPress}>
           <Text
             style={{
               color: 'white',

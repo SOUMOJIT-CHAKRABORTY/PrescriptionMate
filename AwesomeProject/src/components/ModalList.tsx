@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {Modal, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import CloseIcon from 'react-native-vector-icons/AntDesign';
 
@@ -12,10 +12,11 @@ type Medicine = {
 type Props = {
   visible: boolean;
   setVisible: (visible: boolean) => void;
+  medicines: Medicine[];
 };
 
-const ModalList = ({visible, setVisible}: Props) => {
-  const [medicines, setMedicines] = useState<Medicine[]>([]);
+const ModalList = ({visible, setVisible, medicines}: Props) => {
+  // const [medicines, setMedicines] = useState<Medicine[]>([]);
 
   const renderMedicines = () => {
     if (medicines.length === 0) {

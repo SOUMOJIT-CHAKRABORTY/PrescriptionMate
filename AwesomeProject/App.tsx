@@ -13,18 +13,18 @@ const Stack = createNativeStackNavigator();
 
 function App() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator screenOptions={{headerShown: false}}>
-        <Stack.Screen name="Home" component={Home} />
-        <Stack.Screen name="Signup" component={Signup} />
-        <Stack.Screen name="SignIn" component={SignIn} />
-        <Stack.Screen name="Dashboard" component={Dashboard} />
-        <DataContext.Provider value={DataProvider}>
+    <DataContext.Provider value={DataProvider}>
+      <NavigationContainer>
+        <Stack.Navigator screenOptions={{headerShown: false}}>
+          <Stack.Screen name="Home" component={Home} />
+          <Stack.Screen name="Signup" component={Signup} />
+          <Stack.Screen name="SignIn" component={SignIn} />
+          <Stack.Screen name="Dashboard" component={Dashboard} />
           <Stack.Screen name="Prescription" component={Prescription} />
           <Stack.Screen name="Diagonosis" component={Diagonosis} />
-        </DataContext.Provider>
-      </Stack.Navigator>
-    </NavigationContainer>
+        </Stack.Navigator>
+      </NavigationContainer>
+    </DataContext.Provider>
   );
 }
 

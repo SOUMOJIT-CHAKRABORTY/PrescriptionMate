@@ -45,7 +45,7 @@ const Prescription = () => {
       uploadDoc,
     };
     console.log(patientDetils);
-    navigation.navigate('Diagonosis');
+    navigation.navigate('Diagonosis', {patientDetils});
   };
   const navigation = useNavigation();
   return (

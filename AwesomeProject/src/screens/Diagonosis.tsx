@@ -7,33 +7,37 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
-  // Modal,
-  // Button,
 } from 'react-native';
 import PlusIcon from 'react-native-vector-icons/Entypo';
 import EyeIcon from 'react-native-vector-icons/AntDesign';
 import ModalView from '../components/ModalView';
 import ModalList from '../components/ModalList';
-// import PDFDocument from 'react-native-pdf';
-// import RNFS from 'react-native-fs';
-// import Linking from 'react-native-linking';
 
-const Diagonosis = () => {
+export type Medicine = {
+  name: string;
+  tablets: string;
+  times: string;
+  days: string;
+};
+
+const Diagonosis = ({route}) => {
   const [generalInstruction, setGeneralInstruction] = useState<String>();
   const [foodHabits, setFoodHabits] = useState<String>();
   const [advInstructions, setAdvInstructions] = useState<String>();
-  // const [tablets, setTablets] = useState<Number>();
-  // const [times, setTimes] = useState<Number>();
-  // const [days, setDays] = useState<Number>();
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [viewable, setViewable] = useState<boolean>(false);
+  const [medicines, setMedicines] = useState<Medicine[]>([]);
+
+  const {patientDetils} = route.params;
   // const navigation = useNavigation();
 
   const handleOnPress = () => {
     const diagnosisData = {
+      ...patientDetils,
       generalInstruction,
       foodHabits,
       advInstructions,
+      medicines,
       // tablets,
       // times,
       // days,
@@ -138,8 +142,17 @@ const Diagonosis = () => {
             style={{position: 'absolute', right: 15, top: 132}}
           />
 
-          <ModalView visible={modalVisible} setVisible={setModalVisible} />
-          <ModalList visible={viewable} setVisible={setViewable} />
+          <ModalView
+            visible={modalVisible}
+            setVisible={setModalVisible}
+            setMedicines={setMedicines}
+            medicines={medicines}
+          />
+          <ModalList
+            visible={viewable}
+            setVisible={setViewable}
+            medicines={medicines}
+          />
           {/* <TextInput
               keyboardType="numeric"
               style={{width: 100, backgroundColor: 'white', letterSpacing: 2}}
