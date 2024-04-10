@@ -25,8 +25,8 @@ const Diagonosis = () => {
   // const [tablets, setTablets] = useState<Number>();
   // const [times, setTimes] = useState<Number>();
   // const [days, setDays] = useState<Number>();
-  const [modalVisible, setModalVisible] = useState(false);
-  const [viewable, setViewable] = useState(false);
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const [viewable, setViewable] = useState<boolean>(false);
   // const navigation = useNavigation();
 
   const handleOnPress = () => {

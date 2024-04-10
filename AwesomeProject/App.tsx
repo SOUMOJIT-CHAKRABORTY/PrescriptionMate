@@ -7,6 +7,7 @@ import SignIn from './src/screens/SignIn';
 import Dashboard from './src/screens/Dashboard';
 import Prescription from './src/screens/Prescription';
 import Diagonosis from './src/screens/Diagonosis';
+import {DataContext, DataProvider} from './src/context/dataContext';
 
 const Stack = createNativeStackNavigator();
 
@@ -18,8 +19,10 @@ function App() {
         <Stack.Screen name="Signup" component={Signup} />
         <Stack.Screen name="SignIn" component={SignIn} />
         <Stack.Screen name="Dashboard" component={Dashboard} />
-        <Stack.Screen name="Prescription" component={Prescription} />
-        <Stack.Screen name="Diagonosis" component={Diagonosis} />
+        <DataContext.Provider value={DataProvider}>
+          <Stack.Screen name="Prescription" component={Prescription} />
+          <Stack.Screen name="Diagonosis" component={Diagonosis} />
+        </DataContext.Provider>
       </Stack.Navigator>
     </NavigationContainer>
   );
