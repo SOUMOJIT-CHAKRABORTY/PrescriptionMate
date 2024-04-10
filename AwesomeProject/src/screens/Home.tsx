@@ -12,10 +12,11 @@ const Home = () => {
   }
   React.useEffect(() => {
     getData();
+    console.log(isLoggedin);
     if (isLoggedin) {
       navigation.navigate('Dashboard');
     }
-  }, []);
+  }, [isLoggedin]);
 
   const handlePress = () => {
     navigation.navigate('Signup');
