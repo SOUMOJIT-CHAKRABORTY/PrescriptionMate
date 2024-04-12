@@ -12,6 +12,9 @@ import PlusIcon from 'react-native-vector-icons/Entypo';
 import EyeIcon from 'react-native-vector-icons/AntDesign';
 import ModalView from '../components/ModalView';
 import ModalList from '../components/ModalList';
+// import {NativeStackScreenProps} from '@react-navigation/native-stack/lib/typescript/src/types';
+
+// type DiagonosisProps = NativeStackScreenProps<'Diagonosis'>;
 
 export type Medicine = {
   name: string;
