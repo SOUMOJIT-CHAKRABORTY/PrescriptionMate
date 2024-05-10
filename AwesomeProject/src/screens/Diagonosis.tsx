@@ -93,7 +93,7 @@ const Diagonosis = ({route}) => {
         console.log(res.data);
         if (res.data && res.data.generatedFileName) {
           const {generatedFileName} = res.data;
-          const downloadUrl = `http://prescription.mpselfhelp.in/php-api/documents/${generatedFileName}`;
+          const downloadUrl = `https://prescription.mpselfhelp.in/php-api/documents/${generatedFileName}`;
 
           Linking.openURL(downloadUrl);
         } else {

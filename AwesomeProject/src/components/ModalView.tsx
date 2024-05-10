@@ -1,5 +1,8 @@
-import React, {useState} from 'react';
+import axios from 'axios';
+import React, {useEffect, useState} from 'react';
 import {
+  Alert,
+  FlatList,
   Modal,
   StyleSheet,
   Text,
@@ -28,6 +31,28 @@ const ModalView = ({visible, setVisible, medicines, setMedicines}: Props) => {
   const [tablets, setTablets] = useState<string>('');
   const [times, setTimes] = useState<string>('');
   const [days, setDays] = useState<string>('');
+  const [medicinesList, setMedicinesList] = useState([]);
+  const [hide, setHide] = useState(true);
+
+  const fetchMedicines = async () => {
+    try {
+      const resoponse = await axios.post(
+        'https://prescription.mpselfhelp.in/php-api/medicine/read.php',
+        {
+          search_criteria: drugName,
+        },
+      );
+      setMedicinesList(resoponse.data.data);
+      setHide(false);
+      console.log(resoponse.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchMedicines();
+  }, [drugName]);
 
   const meddetails = {
     name: drugName,
@@ -38,6 +63,13 @@ const ModalView = ({visible, setVisible, medicines, setMedicines}: Props) => {
   const handleOnPress = () => {
     console.log(drugName);
     setMedicines([...medicines, meddetails]);
+    Alert.alert('Medicine Added', 'Medicine has been added successfully');
+  };
+
+  const handleSelectMedicine = medicine => {
+    setDrugName(medicine.drug_name); // Update input field with selected medicine
+    setHide(true);
+    setMedicinesList([]); // Clear medicines list
   };
 
   return (
@@ -67,10 +99,25 @@ const ModalView = ({visible, setVisible, medicines, setMedicines}: Props) => {
             color: 'black',
           }}
           placeholder="Add Drug Name"
+          value={drugName}
           placeholderTextColor={'gray'}
           onChange={e => setDrugName(e.nativeEvent.text)}
           className="w-full mt-8 rounded-full px-4 py-3"
         />
+
+        {!hide && (
+          <FlatList
+            data={medicinesList}
+            keyExtractor={item => item.id.toString()}
+            renderItem={({item}) => (
+              <TouchableOpacity
+                style={styles.listItem}
+                onPress={() => handleSelectMedicine(item)}>
+                <Text>{item.drug_name}</Text>
+              </TouchableOpacity>
+            )}
+          />
+        )}
 
         {/* Container for other inputs (in one line) */}
         <View style={styles.inputContainer}>
@@ -141,6 +188,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     borderRadius: 15,
     width: 320,
+  },
+  listItem: {
+    padding: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
   },
 
   input: {
